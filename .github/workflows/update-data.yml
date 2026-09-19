@@ -1,0 +1,46 @@
+name: update-market-data
+
+on:
+  schedule:
+    # 21:30 UTC = 04:30 ICT ของเช้าวันถัดไป
+    # เวลานี้ US ปิดไปแล้ว (16:00 ET) และ SET ของวันนั้นก็ปิดไปนานแล้ว -> ได้ครบทั้งสองตลาดในรอบเดียว
+    - cron: "30 21 * * 1-5"
+  workflow_dispatch:          # กดรันเองได้จากหน้า Actions
+    inputs:
+      full:
+        description: "ดึงย้อนหลังเต็ม (bootstrap)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write             # ให้ GITHUB_TOKEN commit กลับเข้า repo ได้ (ไม่ต้องใช้ PAT)
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install deps
+        run: pip install --quiet yfinance pandas pyarrow requests
+
+      - name: Fetch data
+        run: |
+          python scripts/fetch_market_data.py ${{ inputs.full && '--full' || '' }}
+
+      - name: Commit if changed
+        run: |
+          git config user.name  "market-data-bot"
+          git config user.email "actions@github.com"
+          git add data/
+          if git diff --staged --quiet; then
+            echo "no change"
+          else
+            git commit -m "data: auto update $(date -u +%Y-%m-%d)"
+            git push
+          fi
