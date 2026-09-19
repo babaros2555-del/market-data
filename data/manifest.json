@@ -1,0 +1,42 @@
+{
+  "updated_at": "2026-09-19T05:32:35+00:00",
+  "markets": {
+    "us": {
+      "rows": 8283,
+      "symbols": [
+        "ADI",
+        "AMZN",
+        "DIOD",
+        "ENPH",
+        "GOOGL",
+        "KLAC",
+        "NVDA",
+        "QQQ",
+        "RUN",
+        "SPY",
+        "TXN"
+      ],
+      "start": "2023-09-19",
+      "end": "2026-09-18",
+      "bytes": 362749
+    },
+    "set": {
+      "rows": 6973,
+      "symbols": [
+        "ADVANC.BK",
+        "AOT.BK",
+        "BDMS.BK",
+        "CPALL.BK",
+        "DELTA.BK",
+        "GULF.BK",
+        "KBANK.BK",
+        "PTT.BK",
+        "PTTEP.BK",
+        "SCB.BK"
+      ],
+      "start": "2023-09-18",
+      "end": "2026-09-18",
+      "bytes": 135741
+    }
+  }
+}
